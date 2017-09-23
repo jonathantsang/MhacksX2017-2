@@ -9,6 +9,7 @@ module.exports = function(req, res) {
   console.log(url);
   // plot \[([0-9]*, [0-9]*)+\]
   var splitURL = url.split('=');
+  console.log(splitURL);
   var query = splitURL[1];
   // var query = 'plot[(0,0)(1,1))]';
   console.log(query);
