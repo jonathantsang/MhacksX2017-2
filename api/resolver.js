@@ -6,25 +6,20 @@ var _ = require('underscore');
 // The API that returns the in-email representation.
 module.exports = function(req, res) {
   var url = req.query.url.trim();
-
-  // Giphy image urls are in the format:
-  // http://giphy.com/gifs/<seo-text>-<alphanumeric id>
+  console.log(url);
   // plot \[([0-9]*, [0-9]*)+\]
-  var matches = url.match(/\-([a-zA-Z0-9]+)$/);
-  if (!matches) {
-    res.status(400).send('Invalid URL format');
-    return;
-  }
-
-  var id = matches[1];
+  var splitURL = url.split('=');
+  var query = splitURL[1];
+  // var query = 'plot[(0,0)(1,1))]';
+  console.log(query);
 
   var response = request({
-    url ='http://api.wolframalpha.com/v2/query';
+    url : 'http://api.wolframalpha.com/v2/query',
     qs: {
-      input: term,
-      appid: key,
-      format: 'image,plaintext',
-      output : 'JSON'
+      input: query,
+      format: 'image',
+      output : 'JSON',
+      appid: key
     },
     timeout: 15 * 1000
   }, function(err, response) {
@@ -33,12 +28,16 @@ module.exports = function(req, res) {
       return;
     }
     var data = JSON.parse(response.body);
-    console.log(data);
+    var pods = data.queryresult.pods;
+    if(!pods) return;
+    var ph = pods.find((obj) => {return obj.title==='Plot'});
+    var img = ph.subpods[0].img.src
+    console.log(img);
+
     var width = '100%'
-    var html = '<img style="max-width:100%;" src="' + data + '" width="' + width + '"/>';
+    var html = '<img style="max-width:100%;" src="' + img + '" width="' + width + '"/>';
     res.json({
       body: html
-        // Add raw:true if you're returning content that you want the user to be able to edit
     });
   });
 };

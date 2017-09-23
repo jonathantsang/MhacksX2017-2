@@ -1,0 +1,3 @@
+curl https://localhost:9146/resolver?url=http://api.wolframalpha.com/v2/query?input="plot[(0,0),(1,2)]"&appid=YHY4V6-TWP35G24WW&format=image&output=json --insecure
+
+http://api.wolframalpha.com/v2/query?input=%22plot[(0,0),(1,2)]%22&appid=YHY4V6-TWP35G24WW&format=image&output=json
