@@ -9,6 +9,7 @@ module.exports = function(req, res) {
 
   // Giphy image urls are in the format:
   // http://giphy.com/gifs/<seo-text>-<alphanumeric id>
+  // plot \[([0-9]*, [0-9]*)+\]
   var matches = url.match(/\-([a-zA-Z0-9]+)$/);
   if (!matches) {
     res.status(400).send('Invalid URL format');
@@ -18,22 +19,23 @@ module.exports = function(req, res) {
   var id = matches[1];
 
   var response = request({
-    url: 'http://api.giphy.com/v1/gifs/' + encodeURIComponent(id),
+    url ='http://api.wolframalpha.com/v2/query';
     qs: {
-      api_key: key
+      input: term,
+      appid: key,
+      format: 'image,plaintext',
+      output : 'JSON'
     },
-    gzip: true,
-    json: true,
     timeout: 15 * 1000
   }, function(err, response) {
     if (err) {
       res.status(500).send('Error');
       return;
     }
-
-    var image = response.body.data.images.original;
-    var width = image.width > 600 ? 600 : image.width;
-    var html = '<img style="max-width:100%;" src="' + image.url + '" width="' + width + '"/>';
+    var data = JSON.parse(response.body);
+    console.log(data);
+    var width = '100%'
+    var html = '<img style="max-width:100%;" src="' + data + '" width="' + width + '"/>';
     res.json({
       body: html
         // Add raw:true if you're returning content that you want the user to be able to edit
