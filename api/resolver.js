@@ -14,7 +14,7 @@ module.exports = function(req, res) {
   if(splitURL.length == 2){
     query = splitURL[1];
   }
-  
+   
   // var query = 'plot[(0,0)(1,1))]';
   console.log(query);
 
