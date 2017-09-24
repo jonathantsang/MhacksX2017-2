@@ -7,7 +7,7 @@ var _ = require('underscore');
 module.exports = function(req, res) {
   var url = req.query.url.trim();
   console.log(url);
-  // plot \[([0-9]*, [0-9]*)+\]
+  // plot\([0-9]+,[0-9]+\)+
   var splitURL = url.split('=');
   console.log(splitURL);
   var query = splitURL[0];
